@@ -10,6 +10,18 @@ class OverlayManager {
         this.maxFillers = 3;
         this.minFillers = 1;
         
+        // Video management
+        this.videoElements = [
+            document.getElementById('memeVideo1'),
+            document.getElementById('memeVideo2'),
+            document.getElementById('memeVideo3'),
+            document.getElementById('memeVideo4'),
+            document.getElementById('memeVideo5'),
+            document.getElementById('memeVideo6'),
+            document.getElementById('memeVideo7')
+        ];
+        this.currentVideoIndex = 0;
+        
         this.init();
     }
     
@@ -17,9 +29,62 @@ class OverlayManager {
         // Start the categorized overlay display
         this.startCategorizedOverlays();
         
-        // Ensure video is playing
-        const video = document.getElementById('memeVideo');
-        video.play().catch(e => console.log('Video autoplay prevented:', e));
+        // Set up video system
+        this.setupVideoSystem();
+    }
+    
+    setupVideoSystem() {
+        // Set up all videos
+        this.videoElements.forEach((video, index) => {
+            // Preload all videos
+            video.load();
+            
+            // Add ended event listener to each video
+            video.addEventListener('ended', () => {
+                console.log(`Video ${index + 1} ended naturally, switching to next...`);
+                this.switchToNextVideo();
+            });
+        });
+        
+        // Set first video as active
+        this.setActiveVideo(0);
+        
+        // No timer - videos will switch only when they naturally end
+    }
+    
+    setActiveVideo(index) {
+        // Hide all videos
+        this.videoElements.forEach(video => {
+            video.classList.remove('active');
+            video.pause();
+        });
+        
+        // Show and play the selected video
+        const activeVideo = this.videoElements[index];
+        activeVideo.classList.add('active');
+        activeVideo.currentTime = 0; // Start from beginning
+        activeVideo.play().catch(e => {
+            console.log('Video play failed:', e);
+        });
+        
+        this.currentVideoIndex = index;
+        console.log(`Switching to video ${index + 1}`);
+    }
+    
+    switchToNextVideo() {
+        // Select next video (different from current one)
+        let nextVideoIndex;
+        if (this.videoElements.length > 1) {
+            // Keep trying until we get a different video
+            do {
+                nextVideoIndex = Math.floor(Math.random() * this.videoElements.length);
+            } while (nextVideoIndex === this.currentVideoIndex);
+        } else {
+            nextVideoIndex = 0;
+        }
+        
+        console.log(`Switching from video ${this.currentVideoIndex + 1} to video ${nextVideoIndex + 1}`);
+        this.setActiveVideo(nextVideoIndex);
     }
     
     startCategorizedOverlays() {
@@ -219,6 +284,11 @@ class OverlayManager {
         this.fillerCount = 0;
         this.startCategorizedOverlays();
     }
+    
+    // Public method to switch to next video
+    switchVideo() {
+        this.switchToNextVideo();
+    }
 }
 
 // Initialize the overlay manager when the page loads
@@ -241,10 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 // C to clear all overlays
                 window.overlayManager.clearAllOverlays();
                 break;
+            case 'v':
+                // V to switch to next video
+                window.overlayManager.switchVideo();
+                break;
         }
     });
     
     console.log('Overlay system initialized!');
-    console.log('Controls: Spacebar = show next categorized overlay, R = restart, C = clear all');
+    console.log('Controls: Spacebar = show next categorized overlay, R = restart, C = clear all, V = switch video');
     console.log('Sequence: Start → Follow → 1-3 Fillers → PreEnd → End → repeat');
+    console.log('Videos: Random selection between available meme videos');
 });

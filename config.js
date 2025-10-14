@@ -13,7 +13,6 @@ const overlayConfig = {
         follow: [
             { type: 'text', content: 'really?', position: 'top-right', duration: 2000 },
             { type: 'text', content: 'what I think...', position: 'top-center', duration: 2000 },
-            { type: 'text', content: 'actually...', position: 'middle-right', duration: 2000 },
             { type: 'text', content: 'is this even possible?', position: 'middle-left', duration: 2000 },
             { type: 'text', content: '...for real?', position: 'bottom-center', duration: 2000 }
         ],
