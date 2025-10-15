@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Maker</title>
+    <link rel="stylesheet" href="meme-maker.css">
+</head>
+<body>
+    <div class="toolbar">
+        <button id="addTextBtn" class="tool-btn">Add Text</button>
+        <button id="addImageBtn" class="tool-btn">Add Image</button>
+        <button id="downloadBtn" class="tool-btn">Download</button>
+        <button id="clearBtn" class="tool-btn">Clear</button>
+    </div>
+    
+    <div class="canvas-container">
+        <div id="konva-container"></div>
+    </div>
+    
+    <!-- Hidden file input for image uploads -->
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <script src="meme-maker.js"></script>
+</body>
+</html>
