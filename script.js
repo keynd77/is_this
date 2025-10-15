@@ -18,9 +18,20 @@ class OverlayManager {
             document.getElementById('memeVideo4'),
             document.getElementById('memeVideo5'),
             document.getElementById('memeVideo6'),
-            document.getElementById('memeVideo7')
+            document.getElementById('memeVideo7'),
+            document.getElementById('memeVideo8')
         ];
         this.currentVideoIndex = 0;
+        
+        // Debug: Check if all video elements were found
+        console.log('Video elements found:', this.videoElements.length);
+        this.videoElements.forEach((video, index) => {
+            if (video) {
+                console.log(`Video ${index + 1}: Found`);
+            } else {
+                console.log(`Video ${index + 1}: NOT FOUND`);
+            }
+        });
         
         this.init();
     }
@@ -72,6 +83,10 @@ class OverlayManager {
     }
     
     switchToNextVideo() {
+        // Debug: Check how many videos we have
+        console.log(`Total videos available: ${this.videoElements.length}`);
+        console.log(`Current video index: ${this.currentVideoIndex}`);
+        
         // Select next video (different from current one)
         let nextVideoIndex;
         if (this.videoElements.length > 1) {
@@ -84,6 +99,7 @@ class OverlayManager {
         }
         
         console.log(`Switching from video ${this.currentVideoIndex + 1} to video ${nextVideoIndex + 1}`);
+        console.log(`Available video range: 1-${this.videoElements.length}`);
         this.setActiveVideo(nextVideoIndex);
     }
     
